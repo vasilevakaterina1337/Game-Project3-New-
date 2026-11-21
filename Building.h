@@ -15,7 +15,7 @@ public:
         if (progress < 100) 
             progress += 10; 
     }
-    virtual void produce() { std::cout << "������ " << type << " ���������� �����\n"; }
+    virtual void produce() { std::cout << "Здание " << type << " производит юнита\n"; }
     std::string getType() const { 
         return type; 
     }
@@ -28,4 +28,31 @@ public:
     int getY() const { 
         return y; 
     }
+
+};
+class Barracks : public Building {
+public:
+    Barracks(int x, int y) : Building("barracks", x, y) {}
+    void produce() override { std::cout << "Барак производит юнита\n"; }
+};
+
+class Laboratory : public Building {
+public:
+    Laboratory(int x, int y) : Building("lab", x, y) {}
+    void produce() override { std::cout << "Лаборатория исследует технологию\n"; }
+};
+
+class Warehouse : public Building {
+public:
+    Warehouse(int x, int y) : Building("warehouse", x, y) {}
+};
+
+class PowerPlant : public Building {
+public:
+    PowerPlant(int x, int y) : Building("powerplant", x, y) {}
+};
+
+class Hospital : public Building {
+public:
+    Hospital(int x, int y) : Building("hospital", x, y) {}
 };
