@@ -2,11 +2,18 @@
 #include <limits>
 #include <string>
 #include <locale>
+#include <windows.h>
 #include "GameFacade.h"
 #include "Building.h"
+#ifdef max
+#undef max
+#endif
+
+
 //-642 33 3033
 int main() {
-
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
     setlocale(LC_ALL, "Russian");
 
     auto eventBus = std::make_shared<IObservable>();
@@ -16,27 +23,27 @@ int main() {
 
     int choice;
     while (true) {
-        std::cout << "\nÌåíþ\n"
-            << "1. Ñîçäàòü þíèòà\n"
-            << "2. Ïåðåìåñòèòü\n"
-            << "3. Àòàêîâàòü\n"
-            << "4. Ñîáðàòü ðåñóðñ\n"
-            << "5. Ëå÷èòü\n"
-            << "6. Ïîñòðîèòü çäàíèå\n"
-            << "7. Èññëåäîâàòü\n"
-            << "8. Ðàñïðåäåëèòü ðåñóðñû\n"
-            << "9. Ïðîèçâåñòè â çäàíèè\n"
-            << "10. Ïîêàçàòü êàðòó\n"
-            << "11. Ïîêàçàòü þíèòîâ\n"
-            << "12. Ïîêàçàòü ñòàòèñòèêó\n"
-            << "13. Óñòàíîâèòü ëàíäøàôò\n"
-            << "14. Óñòàíîâèòü îáúåêò\n"
-            << "15. Âçàèìîäåéñòâîâàòü ñ îáúåêòîì\n"
-            << "16. Ââåñòè òåêñòîâóþ êîìàíäó\n"
-            << "0. Âûõîä\n"
-            << "Âûáîð: ";
+        std::cout << "\nÐœÐ•ÐÐ®\n"
+            << "1. Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ ÑŽÐ½Ð¸Ñ‚Ð°\n"
+            << "2. ÐŸÐµÑ€ÐµÐ¼ÐµÑÑ‚Ð¸Ñ‚ÑŒ\n"
+            << "3. ÐÑ‚Ð°ÐºÐ¾Ð²Ð°Ñ‚ÑŒ\n"
+            << "4. Ð¡Ð¾Ð±Ñ€Ð°Ñ‚ÑŒ Ñ€ÐµÑÑƒÑ€Ñ\n"
+            << "5. Ð›ÐµÑ‡Ð¸Ñ‚ÑŒ\n"
+            << "6. ÐŸÐ¾ÑÑ‚Ñ€Ð¾Ð¸Ñ‚ÑŒ Ð·Ð´Ð°Ð½Ð¸Ðµ\n"
+            << "7. Ð˜ÑÑÐ»ÐµÐ´Ð¾Ð²Ð°Ñ‚ÑŒ\n"
+            << "8. Ð Ð°ÑÐ¿Ñ€ÐµÐ´ÐµÐ»Ð¸Ñ‚ÑŒ Ñ€ÐµÑÑƒÑ€ÑÑ‹\n"
+            << "9. ÐŸÑ€Ð¾Ð¸Ð·Ð²ÐµÑÑ‚Ð¸ Ð² Ð·Ð´Ð°Ð½Ð¸Ð¸\n"
+            << "10. ÐŸÐ¾ÐºÐ°Ð·Ð°Ñ‚ÑŒ ÐºÐ°Ñ€Ñ‚Ñƒ\n"
+            << "11. ÐŸÐ¾ÐºÐ°Ð·Ð°Ñ‚ÑŒ ÑŽÐ½Ð¸Ñ‚Ð¾Ð²\n"
+            << "12. ÐŸÐ¾ÐºÐ°Ð·Ð°Ñ‚ÑŒ ÑÑ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÑƒ\n"
+            << "13. Ð£ÑÑ‚Ð°Ð½Ð¾Ð²Ð¸Ñ‚ÑŒ Ð»Ð°Ð½Ð´ÑˆÐ°Ñ„Ñ‚\n"
+            << "14. Ð£ÑÑ‚Ð°Ð½Ð¾Ð²Ð¸Ñ‚ÑŒ Ð¾Ð±ÑŠÐµÐºÑ‚\n"
+            << "15. Ð’Ð·Ð°Ð¸Ð¼Ð¾Ð´ÐµÐ¹ÑÑ‚Ð²Ð¾Ð²Ð°Ñ‚ÑŒ Ñ Ð¾Ð±ÑŠÐµÐºÑ‚Ð¾Ð¼\n"
+            << "16. Ð’Ð²ÐµÑÑ‚Ð¸ Ñ‚ÐµÐºÑÑ‚Ð¾Ð²ÑƒÑŽ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñƒ\n"
+            << "0. Ð’Ñ‹Ñ…Ð¾Ð´\n"
+            << "Ð’Ñ‹Ð±Ð¾Ñ€: ";
         if (!(std::cin >> choice)) break;
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
         if (choice == 0) break;
 
         int x, y, id, targetId, typeChoice, terrainChoice, objectChoice, amount, buildingId;
@@ -44,151 +51,137 @@ int main() {
 
         switch (choice) {
         case 1:
-            std::cout << "Òèï (1-Ïåõ, 2-Ëó÷, 3-Êàâ, 4-Ðàá, 5-Ðàçâ, 6-Òàíê, 7-Ìåä): "; std::cin >> typeChoice;
+            std::cout << "Ð¢Ð¸Ð¿ (1-ÐŸÐµÑ…, 2-Ð›ÑƒÑ‡, 3-ÐšÐ°Ð², 4-Ð Ð°Ð±, 5-Ð Ð°Ð·Ð², 6-Ð¢Ð°Ð½Ðº, 7-ÐœÐµÐ´): "; std::cin >> typeChoice;
             std::cout << "X: "; std::cin >> x;
             std::cout << "Y: "; std::cin >> y;
-            game.createUnit(typeChoice, x, y); break;
+            game.executeCommand(std::make_shared<CreateUnitCommand>(*game.getMediator(), typeChoice, x, y));
+            break;
         case 2:
             std::cout << "ID: "; std::cin >> id;
             std::cout << "X: "; std::cin >> x;
             std::cout << "Y: "; std::cin >> y;
-            game.moveUnit(id, x, y); break;
+            game.executeCommand(std::make_shared<MoveUnitCommand>(*game.getMediator(), id, x, y));
+            break;
         case 3:
-            std::cout << "ID àòàêóþùåãî: "; std::cin >> id;
-            std::cout << "ID öåëè: "; std::cin >> targetId;
-            game.attack(id, targetId); break;
+            std::cout << "ID Ð°Ñ‚Ð°ÐºÑƒÑŽÑ‰ÐµÐ³Ð¾: "; std::cin >> id;
+            std::cout << "ID Ñ†ÐµÐ»Ð¸: "; std::cin >> targetId;
+            game.executeCommand(std::make_shared<AttackCommand>(*game.getMediator(), id, targetId));
+            break;
         case 4:
-            std::cout << "ID Ðàáî÷åãî: "; std::cin >> id;
-            game.collectResource(id, 1); break;
+            std::cout << "ID Ð Ð°Ð±Ð¾Ñ‡ÐµÐ³Ð¾: "; std::cin >> id;
+            game.executeCommand(std::make_shared<CollectResourceCommand>(*game.getMediator(), id, 1));
+            break;
         case 5:
-            std::cout << "ID Ìåäèêà: "; std::cin >> id;
-            std::cout << "ID öåëè: "; std::cin >> targetId;
-            game.heal(id, targetId); break;
+            std::cout << "ID ÐœÐµÐ´Ð¸ÐºÐ°: "; std::cin >> id;
+            std::cout << "ID Ñ†ÐµÐ»Ð¸: "; std::cin >> targetId;
+            game.executeCommand(std::make_shared<HealCommand>(*game.getMediator(), id, targetId));
+            break;
         case 6: {
-            std::cout << "Âûáåðèòå òèï çäàíèÿ:\n"
-            << "1. Áàðàê (barracks)\n"
-            << "2. Ëàáîðàòîðèÿ (lab)\n"
-            << "3. Ñêëàä (warehouse)\n"
-            << "4. Ýëåêòðîñòàíöèÿ (powerplant)\n"
-            << "5. Ãîñïèòàëü (hospital)\n"
-            << "Âàø âûáîð: ";
+            std::cout << "1. Ð‘Ð°Ñ€Ð°Ðº\n"
+                << "2. Ð›Ð°Ð±Ð¾Ñ€Ð°Ñ‚Ð¾Ñ€Ð¸Ñ\n"
+                <<"3. Ð¡ÐºÐ»Ð°Ð´\n"
+                <<"4. Ð­Ð»ÐµÐºÑ‚Ñ€Ð¾ÑÑ‚Ð°Ð½Ñ†Ð¸Ñ\n"
+                <<"5. Ð“Ð¾ÑÐ¿Ð¸Ñ‚Ð°Ð»ÑŒ\n"
+                << "Ð’Ð°Ñˆ Ð²Ñ‹Ð±Ð¾Ñ€ : ";
             std::cin >> typeChoice;
-
-            std::string buildingType;
-            switch (typeChoice) {
-            case 1: buildingType = "barracks";
-                break;
-            case 2: buildingType = "lab"; 
-                break;
-            case 3: buildingType = "warehouse";
-                break;
-            case 4: buildingType = "powerplant";
-                break;
-            case 5: buildingType = "hospital";
-                break;
-            default:
-                std::cout << "Íåâåðíûé òèï çäàíèÿ\n";
-                break;
-            }
-
-            if (!buildingType.empty()) {
-                std::cout << "X: "; std::cin >> x;
-                std::cout << "Y: "; std::cin >> y;
-                game.buildBuilding(buildingType, x, y);
-            }
+            std::string bType;
+            if (typeChoice == 1) bType = "barracks";
+            else if (typeChoice == 2) bType = "lab";
+            else if (typeChoice == 3) bType = "warehouse";
+            else if (typeChoice == 4) bType = "powerplant";
+            else if (typeChoice == 5) bType = "hospital";
+            else { std::cout << "ÐÐµÐ²ÐµÑ€Ð½Ð¾\n"; break; }
+            std::cout << "X: "; std::cin >> x;
+            std::cout << "Y: "; std::cin >> y;
+            game.executeCommand(std::make_shared<BuildBuildingCommand>(*game.getMediator(), bType, x, y));
             break;
         }
         case 7:
-            std::cout << "Òåõíîëîãèÿ: "; std::cin >> s1;
-            game.research(s1); break;
+            std::cout << "Ð¢ÐµÑ…Ð½Ð¾Ð»Ð¾Ð³Ð¸Ñ: "; std::cin >> s1;
+            game.executeCommand(std::make_shared<ResearchCommand>(*game.getMediator(), s1));
+            break;
         case 8: {
-            std::cout << "Îòêóäà ïåðåðàñïðåäåëèòü?\n"
-            << "1. Äåðåâî (wood)\n"
-            << "2. Ìåòàëë (metal)\n"
-            << "3. Ýíåðãèÿ (energy)\n"
-            << "Âàø âûáîð: ";
+            std::cout << "1. Ð”ÐµÑ€ÐµÐ²Ð¾\n"
+                << "2. ÐœÐµÑ‚Ð°Ð»Ð»\n"
+                << "3. Ð­Ð½ÐµÑ€Ð³Ð¸Ñ\n"
+                << "ÐžÑ‚ÐºÑƒÐ´Ð°: ";
             std::cin >> typeChoice;
-
             if (typeChoice == 1) s1 = "wood";
             else if (typeChoice == 2) s1 = "metal";
             else if (typeChoice == 3) s1 = "energy";
-            else {
-                std::cout << "Íåâåðíûé âûáîð ðåñóðñà\n";
-                break;
-            }
+            else { std::cout << "ÐÐµÐ²ÐµÑ€Ð½Ð¾.\n"; break; }
 
-            std::cout << "Êóäà íàïðàâèòü?\n"
-            << "1. Áàðàê (barracks)\n"
-            << "2. Ëàáîðàòîðèÿ (lab)\n"
-            << "3. Ñêëàä (warehouse)\n"
-            << "Âàø âûáîð: ";
-            std::cin >> objectChoice; 
-
+            std::cout << "1. Ð‘Ð°Ñ€Ð°Ðº\n"
+                << "2. Ð›Ð°Ð±Ð¾Ñ€Ð°Ñ‚Ð¾Ñ€Ð¸Ñ\n"
+                << "3. Ð¡ÐºÐ»Ð°Ð´\n"
+                << "ÐšÑƒÐ´Ð°: ";
+            std::cin >> objectChoice;
             if (objectChoice == 1) s2 = "barracks";
             else if (objectChoice == 2) s2 = "lab";
             else if (objectChoice == 3) s2 = "warehouse";
-            else {
-                std::cout << "Íåâåðíûé âûáîð çäàíèÿ.\n";
-                break;
-            }
+            else { std::cout << "ÐÐµÐ²ÐµÑ€Ð½Ð¾\n"; break; }
 
-            std::cout << "Ñêîëüêî?: ";
-            std::cin >> amount;
-
-            game.distributeResources(s1, s2, amount);
+            std::cout << "Ð¡ÐºÐ¾Ð»ÑŒÐºÐ¾: "; std::cin >> amount;
+            game.executeCommand(std::make_shared<DistributeResourcesCommand>(*game.getMediator(), s1, s2, amount));
             break;
         }
-        case 9:
-            std::cout << "ID çäàíèÿ: "; std::cin >> buildingId;
-            std::cout << "Òèï þíèòà: "; std::cin >> s1;
-            game.produceUnit(buildingId, s1); 
-            break;
-        case 10:
-            field.printMap();
-            break;
-        case 11:
-            game.printUnits(); 
-            break;
-        case 12: {
-            std::cout << "×òî âûâåñòè?\n"
-            << "1. Âñ¸ (all)\n"
-            << "2. Òîëüêî þíèòîâ (units)\n"
-            << "3. Òîëüêî çäàíèÿ (buildings)\n"
-            << "4. Òîëüêî ðåñóðñû (resources)\n"
-            << "Âàø âûáîð: ";
+        case 9: {
+            std::cout << "ID Ð·Ð´Ð°Ð½Ð¸Ñ Ð´Ð»Ñ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´ÑÑ‚Ð²Ð°: ";
+            std::cin >> buildingId;
+
+            std::cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ñ‚Ð¸Ð¿ ÑŽÐ½Ð¸Ñ‚Ð°:\n"
+                << "1. ÐŸÐµÑ…Ð¾Ñ‚Ð¸Ð½ÐµÑ† (infantry)\n"
+                << "2. Ð›ÑƒÑ‡Ð½Ð¸Ðº (archer)\n"
+                << "3. ÐšÐ°Ð²Ð°Ð»ÐµÑ€Ð¸Ñ (cavalry)\n"
+                << "4. Ð Ð°Ð±Ð¾Ñ‡Ð¸Ð¹ (worker)\n"
+                << "5. Ð Ð°Ð·Ð²ÐµÐ´Ñ‡Ð¸Ðº (scout)\n"
+                << "6. Ð¢Ð°Ð½Ðº (tank)\n"
+                << "7. ÐœÐµÐ´Ð¸Ðº (medic)\n"
+                << "Ð’Ð°Ñˆ Ð²Ñ‹Ð±Ð¾Ñ€: ";
             std::cin >> typeChoice;
-
-            std::string sub;
+            std::string ut;
             switch (typeChoice) {
-            case 1: sub = "all"; 
-                break;
-            case 2: sub = "units";
-                break;
-            case 3: sub = "buildings"; 
-                break;
-            case 4: sub = "resources";
-                break;
+            case 1: ut = "infantry"; break;
+            case 2: ut = "archer";   break;
+            case 3: ut = "cavalry";  break;
+            case 4: ut = "worker";   break;
+            case 5: ut = "scout";    break;
+            case 6: ut = "tank";     break;
+            case 7: ut = "medic";    break;
             default:
-                std::cout << "Íåâåðíûé âûáîð\n";
+                std::cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ñ‚Ð¸Ð¿ ÑŽÐ½Ð¸Ñ‚Ð°.\n";
                 break;
             }
-
-            if (!sub.empty()) {
-                game.getStats(sub);
+            if (!ut.empty()) {
+                game.executeCommand(std::make_shared<ProduceUnitCommand>(*game.getMediator(), buildingId, ut));
             }
+            break;
+        }
+        case 10:
+            field.printMap(); break;
+        case 11:
+            game.printUnits(); break;
+        case 12: {
+            std::cout << "1. Ð’ÑÑ‘\n2. Ð®Ð½Ð¸Ñ‚Ñ‹\n3. Ð—Ð´Ð°Ð½Ð¸Ñ\n4. Ð ÐµÑÑƒÑ€ÑÑ‹\nÐ’Ñ‹Ð±Ð¾Ñ€: ";
+            std::cin >> typeChoice;
+            std::string sub = "all";
+            if (typeChoice == 2) sub = "units";
+            else if (typeChoice == 3) sub = "buildings";
+            else if (typeChoice == 4) sub = "resources";
+            else if (typeChoice != 1) { std::cout << "ÐÐµÐ²ÐµÑ€Ð½Ð¾\n"; break; }
+            game.executeCommand(std::make_shared<StatsCommand>(*game.getMediator(), sub));
             break;
         }
         case 13: {
-            std::cout << "Âûáåðèòå òèï ëàíäøàôòà:\n"
-            << "1. Ðàâíèíà\n"
-            << "2. Ëåñ\n"
-            << "3. Áîëîòî\n"
-            << "4. Ãîðû\n"
-            << "Âàø âûáîð: ";
+            std::cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ñ‚Ð¸Ð¿ Ð»Ð°Ð½Ð´ÑˆÐ°Ñ„Ñ‚Ð°:\n"
+                << "1. Ð Ð°Ð²Ð½Ð¸Ð½Ð°\n"
+                << "2. Ð›ÐµÑ\n"
+                << "3. Ð‘Ð¾Ð»Ð¾Ñ‚Ð¾\n"
+                << "4. Ð“Ð¾Ñ€Ñ‹\n"
+                << "Ð’Ð°Ñˆ Ð²Ñ‹Ð±Ð¾Ñ€: ";
             std::cin >> terrainChoice;
-
             if (terrainChoice < 1 || terrainChoice > 4) {
-                std::cout << "Íåâåðíûé òèï ëàíäøàôòà\n";
+                std::cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ñ‚Ð¸Ð¿ Ð»Ð°Ð½Ð´ÑˆÐ°Ñ„Ñ‚Ð°.\n";
                 break;
             }
 
@@ -199,15 +192,15 @@ int main() {
             break;
         }
         case 14: {
-            std::cout << "Âûáåðèòå íåéòðàëüíûé îáúåêò:\n"
-            << "1. Ñóíäóê (TreasureChest)\n"
-            << "2. Ëîâóøêà (Trap)\n"
-            << "3. Àëòàðü (Altar)\n"
-            << "Âàø âûáîð: ";
+            std::cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð½ÐµÐ¹Ñ‚Ñ€Ð°Ð»ÑŒÐ½Ñ‹Ð¹ Ð¾Ð±ÑŠÐµÐºÑ‚:\n"
+                << "1. Ð¡ÑƒÐ½Ð´ÑƒÐº\n"
+                << "2. Ð›Ð¾Ð²ÑƒÑˆÐºÐ°\n"
+                << "3. ÐÐ»Ñ‚Ð°Ñ€ÑŒ\n"
+                << "Ð’Ð°Ñˆ Ð²Ñ‹Ð±Ð¾Ñ€: ";
             std::cin >> objectChoice;
 
             if (objectChoice < 1 || objectChoice > 3) {
-                std::cout << "Íåâåðíûé âûáîð îáúåêòà\n";
+                std::cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ñ‹Ð±Ð¾Ñ€ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°\n";
                 break;
             }
 
@@ -218,19 +211,19 @@ int main() {
             break;
         }
         case 15:
-            std::cout << "ID þíèòà: "; std::cin >> id;
+            std::cout << "ID ÑŽÐ½Ð¸Ñ‚Ð°: "; std::cin >> id;
             std::cout << "X: "; std::cin >> x;
             std::cout << "Y: "; std::cin >> y;
             game.interact(id, x, y); break;
         case 16: {
-            std::cout << "Êîìàíäà: ";
+            std::cout << "ÐšÐ¾Ð¼Ð°Ð½Ð´Ð°: ";
             std::string line;
             std::getline(std::cin, line);
             if (!line.empty()) game.processInput(line);
             break;
         }
         default:
-            std::cout << "Íåâåðíûé ââîä\n";
+            std::cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
         }
     }
     return 0;
