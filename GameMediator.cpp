@@ -17,7 +17,7 @@ void GameMediator::addUnit(std::shared_ptr<Unit> unit, int x, int y) {
         eventBus->notify({ UnitEvent::Created, unit->getId() });
     }
     else {
-        std::cout << "Íåâîçìîæíî ðàçìåñòèòü þíèòà íà (" << x << "," << y << ").\n";
+        std::cout << "ÐÐµÐ²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ñ€Ð°Ð·Ð¼ÐµÑÑ‚Ð¸Ñ‚ÑŒ ÑŽÐ½Ð¸Ñ‚Ð° Ð½Ð° (" << x << "," << y << ").\n";
         base.onUnitEvent({ UnitEvent::Destroyed, unit->getId() });
     }
 }
@@ -25,7 +25,7 @@ void GameMediator::addUnit(std::shared_ptr<Unit> unit, int x, int y) {
 void GameMediator::moveUnit(int unitId, int x, int y) {
     auto u = unitMgr.getUnitById(unitId);
     if (!u) { 
-        std::cout << "Þíèò íå íàéäåí\n"; 
+        std::cout << "Ð®Ð½Ð¸Ñ‚ Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½\n"; 
         return; 
     }
 
@@ -34,11 +34,11 @@ void GameMediator::moveUnit(int unitId, int x, int y) {
     int oldX = u->getX(), oldY = u->getY();
     if (field.getUnitAt(oldX, oldY) == u) field.removeUnit(oldX, oldY);
     if (field.addUnit(u, x, y)) {
-        std::cout << "[Ìåäèàòîð] Þíèò " << unitId << " ïåðåìåùåí\n";
+        std::cout << "[ÐœÐµÐ´Ð¸Ð°Ñ‚Ð¾Ñ€] Ð®Ð½Ð¸Ñ‚ " << unitId << " Ð¿ÐµÑ€ÐµÐ¼ÐµÑ‰ÐµÐ½\n";
     }
     else {
         field.addUnit(u, oldX, oldY);
-        std::cout << "Íåâîçìîæíî ïåðåìåñòèòü þíèòà\n";
+        std::cout << "ÐÐµÐ²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð¿ÐµÑ€ÐµÐ¼ÐµÑÑ‚Ð¸Ñ‚ÑŒ ÑŽÐ½Ð¸Ñ‚Ð°\n";
     }
 }
 
@@ -50,7 +50,7 @@ void GameMediator::interactWithObject(int unitId, int x, int y) {
     auto obj = field.getObject(x, y);
     auto u = unitMgr.getUnitById(unitId);
     if (!obj || !u) { 
-        std::cout << "Îáúåêò èëè þíèò íå íàéäåíû.\n"; 
+        std::cout << "ÐžÐ±ÑŠÐµÐºÑ‚ Ð¸Ð»Ð¸ ÑŽÐ½Ð¸Ñ‚ Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½Ñ‹.\n"; 
         return; 
     }
     *obj + *u;
@@ -86,7 +86,7 @@ void GameMediator::createUnit(int type, int x, int y) {
         break;
     case 7: f = std::make_unique<MedicFactory>();   
         break;
-    default: std::cout << "Íåâåðíûé òèï þíèòà\n";
+    default: std::cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ñ‚Ð¸Ð¿ ÑŽÐ½Ð¸Ñ‚Ð°\n";
         return;
     }
     int id = unitMgr.allocateId();
@@ -95,10 +95,10 @@ void GameMediator::createUnit(int type, int x, int y) {
         base.addUnit(u);
         unitMgr.addExisting(u);
         eventBus->notify({ UnitEvent::Created, u->getId() });
-        std::cout << "[Ìåäèàòîð] Ñîçäàí " << u->getName() << " id=" << id << "\n";
+        std::cout << "[ÐœÐµÐ´Ð¸Ð°Ñ‚Ð¾Ñ€] Ð¡Ð¾Ð·Ð´Ð°Ð½ " << u->getName() << " id=" << id << "\n";
     }
     else {
-        std::cout << "Êëåòêà çàíÿòà\n";
+        std::cout << "ÐšÐ»ÐµÑ‚ÐºÐ° Ð·Ð°Ð½ÑÑ‚Ð°\n";
     }
 }
 
@@ -106,7 +106,7 @@ void GameMediator::resolveCombat(int attackerId, int targetId) {
     auto atk = unitMgr.getUnitById(attackerId);
     auto tgt = unitMgr.getUnitById(targetId);
     if (!atk || !tgt) { 
-        std::cout << "Öåëü èëè àòàêóþùèé íå íàéäåíû\n"; 
+        std::cout << "Ð¦ÐµÐ»ÑŒ Ð¸Ð»Ð¸ Ð°Ñ‚Ð°ÐºÑƒÑŽÑ‰Ð¸Ð¹ Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½Ñ‹\n"; 
         return; 
     }
 
@@ -115,7 +115,7 @@ void GameMediator::resolveCombat(int attackerId, int targetId) {
     int dmg = combat.calculateDamage(*atk, *tgt);
     tgt->takeDamage(dmg);
     eventBus->notify({ UnitEvent::Damaged, targetId });
-    std::cout << "[Ìåäèàòîð] " << atk->getName() << " íàí¸ñ " << dmg << " óðîíà\n";
+    std::cout << "[ÐœÐµÐ´Ð¸Ð°Ñ‚Ð¾Ñ€] " << atk->getName() << " Ð½Ð°Ð½Ñ‘Ñ " << dmg << " ÑƒÑ€Ð¾Ð½Ð°\n";
 
     if (!tgt->isAlive()) {
         if (field.getUnitAt(tgt->getX(), tgt->getY()) == tgt) field.removeUnit(tgt->getX(), tgt->getY());
@@ -126,19 +126,19 @@ void GameMediator::resolveCombat(int attackerId, int targetId) {
 
 void GameMediator::collectResource(int unitId, int) {
     auto u = unitMgr.getUnitById(unitId);
-    if (!u || u->getType() != UnitType::Worker) { std::cout << "Íóæåí Ðàáî÷èé\n"; return; }
+    if (!u || u->getType() != UnitType::Worker) { std::cout << "ÐÑƒÐ¶ÐµÐ½ Ð Ð°Ð±Ð¾Ñ‡Ð¸Ð¹\n"; return; }
 
     u->setOrder("collect");
 
     resources.addWood(50);
-    std::cout << "[Ìåäèàòîð] Ñîáðàíî 50 äåðåâà (âñåãî: " << resources.wood << ")\n";
+    std::cout << "[ÐœÐµÐ´Ð¸Ð°Ñ‚Ð¾Ñ€] Ð¡Ð¾Ð±Ñ€Ð°Ð½Ð¾ 50 Ð´ÐµÑ€ÐµÐ²Ð° (Ð²ÑÐµÐ³Ð¾: " << resources.wood << ")\n";
 }
 
 void GameMediator::healUnit(int medicId, int targetId) {
     auto m = unitMgr.getUnitById(medicId);
     auto t = unitMgr.getUnitById(targetId);
     if (!m || m->getType() != UnitType::Medic) { 
-        std::cout << "Íóæåí Ìåäèê\n"; 
+        std::cout << "ÐÑƒÐ¶ÐµÐ½ ÐœÐµÐ´Ð¸Ðº\n"; 
         return; 
     }
     if (!t) return;
@@ -146,20 +146,31 @@ void GameMediator::healUnit(int medicId, int targetId) {
     m->setOrder("heal unit " + std::to_string(targetId));
 
     t->heal(30);
-    std::cout << "[Ìåäèàòîð] Âûëå÷åíî 30 HP\n";
+    std::cout << "[ÐœÐµÐ´Ð¸Ð°Ñ‚Ð¾Ñ€] Ð’Ñ‹Ð»ÐµÑ‡ÐµÐ½Ð¾ 30 HP\n";
 }
 
 void GameMediator::buildBuilding(const std::string& type, int x, int y) {
     if (!resources.spendWood(100)) return;
-    auto b = std::make_shared<Building>(type, x, y);
+
+    std::shared_ptr<Building> b;
+    if (type == "barracks")        b = std::make_shared<Barracks>(x, y);
+    else if (type == "lab")        b = std::make_shared<Laboratory>(x, y);
+    else if (type == "warehouse")  b = std::make_shared<Warehouse>(x, y);
+    else if (type == "powerplant") b = std::make_shared<PowerPlant>(x, y);
+    else if (type == "hospital")   b = std::make_shared<Hospital>(x, y);
+    else {
+        std::cout << "[ÐžÑˆÐ¸Ð±ÐºÐ°] ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ñ‹Ð¹ Ñ‚Ð¸Ð¿ Ð·Ð´Ð°Ð½Ð¸Ñ: " << type << "\n";
+        return;
+    }
+
     base.addBuilding(b);
     setBuilding(x, y, b);
-    std::cout << "[Ìåäèàòîð] Ïîñòðîåíî " << type << "\n";
+    std::cout << "[ÐœÐµÐ´Ð¸Ð°Ñ‚Ð¾Ñ€] ÐŸÐ¾ÑÑ‚Ñ€Ð¾ÐµÐ½Ð¾ " << type << " Ð½Ð° (" << x << "," << y << ")\n";
 }
 
 void GameMediator::startResearch(const std::string& tech) {
     researchName = tech; researchRemaining = 3;
-    std::cout << "[Ìåäèàòîð] Èññëåäîâàíèå " << tech << " çàïóùåíî\n";
+    std::cout << "[ÐœÐµÐ´Ð¸Ð°Ñ‚Ð¾Ñ€] Ð˜ÑÑÐ»ÐµÐ´Ð¾Ð²Ð°Ð½Ð¸Ðµ " << tech << " Ð·Ð°Ð¿ÑƒÑ‰ÐµÐ½Ð¾\n";
 }
 
 void GameMediator::distributeResources(const std::string& from, const std::string& to, int amount) {
@@ -168,7 +179,7 @@ void GameMediator::distributeResources(const std::string& from, const std::strin
 
 void GameMediator::produceUnit(int buildingId, const std::string& unitType) {
     auto b = buildMgr.getById(buildingId);
-    if (!b) { std::cout << "Çäàíèå íå íàéäåíî\n"; return; }
+    if (!b) { std::cout << "Ð—Ð´Ð°Ð½Ð¸Ðµ Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½Ð¾\n"; return; }
     b->produce();
     int type = 1;
     if (unitType == "infantry") type = 1;
@@ -183,15 +194,15 @@ void GameMediator::produceUnit(int buildingId, const std::string& unitType) {
 
 void GameMediator::getStats(const std::string& sub) {
     if (sub.empty() || sub == "all") {
-        std::cout << "Ðåñóðñû: wood=" << resources.wood << " metal=" << resources.metal << " energy=" << resources.energy << "\n";
-        std::cout << "Þíèòû (" << unitMgr.all().size() << "):\n";
+        std::cout << "Ð ÐµÑÑƒÑ€ÑÑ‹: wood=" << resources.wood << " metal=" << resources.metal << " energy=" << resources.energy << "\n";
+        std::cout << "Ð®Ð½Ð¸Ñ‚Ñ‹ (" << unitMgr.all().size() << "):\n";
         for (auto& u : unitMgr.all()) {
             std::cout << "  #" << u->getId() << " " << u->getName()
                 << " HP=" << u->getHealth()
                 << " pos=(" << u->getX() << "," << u->getY() << ")"
                 << " order=" << u->getOrder() << "\n";
         }
-        std::cout << "Çäàíèÿ (" << buildMgr.all().size() << "):\n";
+        std::cout << "Ð—Ð´Ð°Ð½Ð¸Ñ (" << buildMgr.all().size() << "):\n";
         for (auto& b : buildMgr.all()) {
             std::cout << "  " << b->getType() << " pos=(" << b->getX() << "," << b->getY() << ")\n";
         }
